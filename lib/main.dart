@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import './screens/user_page.dart';
+
 import 'models/user.dart';
 
 Future<void> main() async {
@@ -22,7 +24,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Home Page'),
+      routes: {
+        UserPage.routeName:(context) => UserPage()
+      }
     );
   }
 }
@@ -37,30 +42,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final controller = TextEditingController();
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: TextField(controller: controller),
+          title: const Text("Registration Page"),
           actions: [
             IconButton(
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.arrow_forward),
               onPressed: () {
-                final name = controller.text;
-                createUser(name: name);
+                Navigator.of(context).pushNamed(UserPage.routeName);
               },
             )
           ],
         ),
       );
-  Future createUser({required String name}) async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc();
-
-    final user = User(
-      id: docUser.id,
-      name: name,
-      age: 23,
-      birthday: DateTime(2000, 5, 12),
-    );
-    await docUser.set(user.toJson());
-  }
 }
