@@ -19,4 +19,13 @@ class User {
       'birthday': birthday,
     };
   }
+
+  static User fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      age: json['age'],
+      birthday: json['birthday'].toDate(),
+    );
+  }
 }
